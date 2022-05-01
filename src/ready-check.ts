@@ -10,7 +10,7 @@ let gameUsers : StoredDocument<User>[] = [];
  */
 Hooks.once("init", function () {
 
-	game.settings.register("ready-check", "showChatMessagesForUserUpdates", {
+	game.settings.register("mg-ready-check", "showChatMessagesForUserUpdates", {
 		name: game.i18n.localize("READYCHECK.SettingsChatMessagesForUserUpdatesTitle"),
 		hint: game.i18n.localize("READYCHECK.SettingsChatMessagesForUserUpdatesHint"),
 		scope: "world",
@@ -19,7 +19,7 @@ Hooks.once("init", function () {
 		type: Boolean
 	});
 
-	game.settings.register("ready-check", "showChatMessagesForChecks", {
+	game.settings.register("mg-ready-check", "showChatMessagesForChecks", {
 		name: game.i18n.localize("READYCHECK.SettingsChatMessagesForChecksTitle"),
 		hint: game.i18n.localize("READYCHECK.SettingsChatMessagesForChecksHint"),
 		scope: "world",
@@ -28,7 +28,7 @@ Hooks.once("init", function () {
 		type: Boolean
 	});
 
-	game.settings.register("ready-check", "playAlertForCheck", {
+	game.settings.register("mg-ready-check", "playAlertForCheck", {
 		name: game.i18n.localize("READYCHECK.SettingsPlayAlertForChecksTitle"),
 		hint: game.i18n.localize("READYCHECK.SettingsPlayAlertForChecksHint"),
 		scope: "world",
@@ -37,16 +37,16 @@ Hooks.once("init", function () {
 		type: Boolean
 	});
 
-	game.settings.register("ready-check", "checkAlertSoundPath", {
+	game.settings.register("mg-ready-check", "checkAlertSoundPath", {
 		name: game.i18n.localize("READYCHECK.SettingsCheckAlertSoundPathTitle"),
 		hint: game.i18n.localize("READYCHECK.SettingsCheckAlertSoundPathHint"),
 		scope: "world",
 		config: true,
-		default: 'modules/ready-check/sounds/notification.mp3',
+		default: 'modules/mg-ready-check/sounds/notification.mp3',
 		type: String
 	});
 
-	game.settings.register("ready-check", "enableDiscordIntegration", {
+	game.settings.register("mg-ready-check", "enableDiscordIntegration", {
 		name: game.i18n.localize("READYCHECK.SettingsEnableDiscordIntegrationTitle"),
 		hint: game.i18n.localize("READYCHECK.SettingsEnableDiscordIntegrationHint"),
 		scope: "world",
@@ -55,7 +55,7 @@ Hooks.once("init", function () {
 		type: Boolean
 	});
 
-	game.settings.register("ready-check", "statusResetOnLoad", {
+	game.settings.register("mg-ready-check", "statusResetOnLoad", {
 		name: game.i18n.localize("READYCHECK.SettingsStatusResetOnLoadTitle"),
 		hint: game.i18n.localize("READYCHECK.SettingsStatusResetOnLoadHint"),
 		scope: "world",
@@ -64,7 +64,7 @@ Hooks.once("init", function () {
 		type: Boolean
 	});
 
-	game.settings.register("ready-check", "pauseOnReadyCheck", {
+	game.settings.register("mg-ready-check", "pauseOnReadyCheck", {
 		name: game.i18n.localize("READYCHECK.SettingsPauseOnReadyCheckTitle"),
 		hint: game.i18n.localize("READYCHECK.SettingsPauseOnReadyCheckHint"),
 		scope: "world",
@@ -73,7 +73,7 @@ Hooks.once("init", function () {
 		type: Boolean
 	});
 
-	game.settings.register("ready-check", "unpauseOnAllReady", {
+	game.settings.register("mg-ready-check", "unpauseOnAllReady", {
 		name: game.i18n.localize("READYCHECK.SettingsUnpauseOnAllReadyTitle"),
 		hint: game.i18n.localize("READYCHECK.SettingsUnpauseOnAllReadyHint"),
 		scope: "world",
@@ -86,7 +86,7 @@ Hooks.once("init", function () {
 // Render the status symbols and if the setting is enabled, reset all statuses.
 Hooks.once("ready", async function () {
 	gameUsers = game.users.contents;
-	if (game.settings.get('ready-check', 'statusResetOnLoad')) {
+	if (game.settings.get('mg-ready-check', 'statusResetOnLoad') && game.user.isGM) {
 		setAllToNotReady();
 	}
 	await updatePlayersWindow();
@@ -98,9 +98,9 @@ Hooks.on('renderChatLog', function () {
 	createButtons();
 	if (socket) {
 		// create the socket handler
-		socket.on('module.ready-check', async (data : ReadyCheckUserData) => {
+		socket.on('module.mg-ready-check', async (data : ReadyCheckUserData) => {
 			if (data.action === 'check') {
-				displayReadyCheckDialog(game.i18n.localize("READYCHECK.DialogContentReadyCheck") as string);
+				displayReadyCheckDialog(game.i18n.localize("READYCHECK.DialogContentReadyCheck"));
 			}
 			else if (data.action === 'update') {
 				await processReadyResponse(data);
@@ -121,7 +121,7 @@ Hooks.on('initReadyCheck', async function (message : string = game.i18n.localize
 	if (game.user.isGM) {
 		await initReadyCheck(message);
 	} else {
-		ui.notifications.error(game.i18n.localize("READYCHECK.ErrorNotGM") as string);
+		ui.notifications.error(game.i18n.localize("READYCHECK.ErrorNotGM"));
 	}
 });
 
@@ -130,7 +130,7 @@ Hooks.on('initReadyCheck', async function (message : string = game.i18n.localize
  */
 function setAllToNotReady() {
 	gameUsers.forEach((user : User) =>  {
-		user.setFlag('ready-check', 'isReady', false).catch(reason => {
+		user.setFlag('mg-ready-check', 'isReady', false).catch(reason => {
 			console.error(reason)
 		});
 	});
@@ -194,7 +194,7 @@ function displayGmDialog() {
 	};
 	new Dialog({
 		title: game.i18n.localize("READYCHECK.GmDialogTitle"),
-		content: `<p>${game.i18n.localize("READYCHECK.GmDialogContent") as string}</p>`, 
+		content: `<p>${game.i18n.localize("READYCHECK.GmDialogContent")}</p>`, 
 		buttons: buttons,
 		default: "check"
 	}).render(true);
@@ -213,18 +213,18 @@ function initReadyCheckDefault() {
  * @param message The message to display in the ready check dialogue and to forward to Discord
  */
 async function initReadyCheck(message : string = game.i18n.localize("READYCHECK.DialogContentReadyCheck")) {
-	if (game.settings.get('ready-check', 'pauseOnReadyCheck')) {
+	if (game.settings.get('mg-ready-check', 'pauseOnReadyCheck')) {
 		game.togglePause(true, true);
 	}
 	const data = { action: 'check' };
 	setAllToNotReady();
 	if (socket) {
-		socket.emit('module.ready-check', data);
+		socket.emit('module.mg-ready-check', data);
 	}
 	displayReadyCheckDialog(message);
 	await playReadyCheckAlert();
 
-	if (game.settings.get('ready-check', 'enableDiscordIntegration')) {
+	if (game.settings.get('mg-ready-check', 'enableDiscordIntegration')) {
 		// For every user in the game, if they have a token in the current scene, ping them as part of the ready check message.
 		getUsersWithTokenInScene().forEach((user : User) => {
 			message = `@${user.name} ${message}`;
@@ -275,7 +275,7 @@ function displayStatusUpdateDialog() {
 
 	new Dialog({
 		title: game.i18n.localize("READYCHECK.DialogTitleStatusUpdate"),
-		content: `<p>${game.i18n.localize("READYCHECK.DialogContentStatusUpdate") as string}</p>`,
+		content: `<p>${game.i18n.localize("READYCHECK.DialogContentStatusUpdate")}</p>`,
 		buttons: buttons,
 		default: "yes"
 	}).render(true);
@@ -315,7 +315,7 @@ async function updateReadyStatus(data: ReadyCheckUserData) {
 	if (game.user.isGM) {
 		await processReadyResponse(data);
 	} else if (socket) {
-		socket.emit('module.ready-check', data);
+		socket.emit('module.mg-ready-check', data);
 	}
 }
 
@@ -327,16 +327,16 @@ async function processReadyResponse(data: ReadyCheckUserData) {
 	if (game.user.isGM) {
 		const userToUpdate = gameUsers.find((user : User) => user.id === data.userId);
 		if (userToUpdate) {
-			await userToUpdate.setFlag('ready-check', 'isReady', data.ready);
+			await userToUpdate.setFlag('mg-ready-check', 'isReady', data.ready);
 			ui.players.render();
 			let message : string;
 			if (allUsersInSceneReady()) {
 				// Pause the game if the setting to do so is enabled.
-				if (game.settings.get('ready-check', 'unpauseOnAllReady')) {
+				if (game.settings.get('mg-ready-check', 'unpauseOnAllReady')) {
 					game.togglePause(false, true);
 				}
 				// Send a message to the GM indicating that all users are ready.
-				message = `@${game.user.name as string} `.concat(game.i18n.localize("READYCHECK.AllPlayersReady") as string);
+				message = `@${game.user.name} `.concat(game.i18n.localize("READYCHECK.AllPlayersReady"));
 				Hooks.callAll("sendDiscordMessage", message);
 			}
 		} else {
@@ -353,7 +353,7 @@ function allUsersInSceneReady() : boolean {
 	let usersReady = true;
 	const sceneUsers = getUsersWithTokenInScene();
 	sceneUsers.forEach((user : User) => {
-		if (!user.getFlag('ready-check', 'isReady')) {
+		if (!user.getFlag('mg-ready-check', 'isReady')) {
 			usersReady = false;
 		}
 	});
@@ -367,12 +367,12 @@ function allUsersInSceneReady() : boolean {
  * @param data event data from clicking either of the buttons to indicate ready/not ready
  */
 async function displayReadyCheckChatMessage(data: ReadyCheckUserData) {
-	if (game.settings.get("ready-check", "showChatMessagesForChecks")) {
+	if (game.settings.get("mg-ready-check", "showChatMessagesForChecks")) {
 		// Find the current user
-		const currentUser = gameUsers.find((user : User) => { user.id === data.userId });
+		const currentUser = gameUsers.find((user : User) => user.data._id === data.userId );
 		if (currentUser) {
 			const username = currentUser.data.name;
-			const content = `${username} ${game.i18n.localize("READYCHECK.ChatTextCheck") as string}`;
+			const content = `${username} ${game.i18n.localize("READYCHECK.ChatTextCheck")}`;
 			await ChatMessage.create({ speaker: { alias: "Ready Set Go!" }, content: content });
 		} else {
 			throw new Error(`The user with the id ${data.userId} was not found.`);
@@ -386,12 +386,12 @@ async function displayReadyCheckChatMessage(data: ReadyCheckUserData) {
  * @param data event data from clicking either of the buttons to indicate ready/not ready
  */
 async function displayStatusUpdateChatMessage(data: ReadyCheckUserData) {
-	if (game.settings.get("ready-check", "showChatMessagesForUserUpdates")) {
+	if (game.settings.get("mg-ready-check", "showChatMessagesForUserUpdates")) {
 		const currentUser = gameUsers.find((user : User) => user.id === data.userId);
 		if (currentUser) {
 			const username = currentUser.data.name;
-			const status = data.ready ? game.i18n.localize("READYCHECK.StatusReady") as string: game.i18n.localize("READYCHECK.StatusNotReady") as string;
-			const content = `${username} ${game.i18n.localize("READYCHECK.ChatTextUserUpdate") as string} ${status}`;
+			const status = data.ready ? game.i18n.localize("READYCHECK.StatusReady"): game.i18n.localize("READYCHECK.StatusNotReady");
+			const content = `${username} ${game.i18n.localize("READYCHECK.ChatTextUserUpdate")} ${status}`;
 			await ChatMessage.create({ speaker: { alias: "Ready Set Go!" }, content: content });
 		} else {
 			throw new Error(`The user with the id ${data.userId} was not found.`);
@@ -403,10 +403,10 @@ async function displayStatusUpdateChatMessage(data: ReadyCheckUserData) {
  * Play sound effect associated with ready check start
  */
 async function playReadyCheckAlert() {
-	const playAlert = game.settings.get("ready-check", "playAlertForCheck");
-	const alertSound = game.settings.get("ready-check", "checkAlertSoundPath");
+	const playAlert = game.settings.get("mg-ready-check", "playAlertForCheck");
+	const alertSound = game.settings.get("mg-ready-check", "checkAlertSoundPath");
 	if (playAlert && !alertSound) {
-		await AudioHelper.play({ src: "modules/ready-check/sounds/notification.mp3", volume: 1, autoplay: true, loop: false }, true);
+		await AudioHelper.play({ src: "modules/mg-ready-check/sounds/notification.mp3", volume: 1, autoplay: true, loop: false }, true);
 	} else if (playAlert && alertSound) {
 		await AudioHelper.play({ src: alertSound as string, volume: 1, autoplay: true, loop: false }, true);
 	}
@@ -418,7 +418,7 @@ async function playReadyCheckAlert() {
 async function updatePlayersWindow() {
 	for (let i = 0; i < gameUsers.length; i++) {
 		// Is the user ready
-		const ready = await gameUsers[i].getFlag('ready-check', 'isReady');
+		const ready = await gameUsers[i].getFlag('mg-ready-check', 'isReady');
 		// the Id of the current user
 		const userId : string = gameUsers[i].data._id;
 
@@ -436,7 +436,7 @@ async function updatePlayersWindow() {
 			iconClassToAdd = "fa-check";
 			iconClassToRemove = "fa-times";
 		} else {
-			title = game.i18n.localize("READYCHECK.PlayerNotReady") as string;
+			title = game.i18n.localize("READYCHECK.PlayerNotReady");
 			classToAdd = "not-ready";
 			classToRemove = "ready";
 			iconClassToAdd = "fa-times";
