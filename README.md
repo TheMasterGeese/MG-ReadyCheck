@@ -15,7 +15,7 @@ Video (GM View): https://i.gyazo.com/5b98ca43945d9796833a8912a95a6945.mp4
 
 You can use the Ready Check when you first start up the game, right before combat starts, or when you're taking a quick break so you can see when everyone is back and ready to play!
 
-Is also used within other MG Living World mods, used to control the flow of combat and keep players from missing important notifications.
+Also exposes a hook to trigger a ready check with a custom message (TODO: only trigger ready check for certain players as well). These hooks are also used within other MG Living World mods, used to control the flow of combat and keep players from missing important notifications.
 
 ## Responding to a Ready Check (GM and Players)
 When a ready check is initiated, a dialog will display on each user's screen. To let everyone know you're ready, just click the "Ready" button at the bottom of the window. When you do so, a green check mark will appear next to your name in the players window.
