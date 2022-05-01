@@ -1,0 +1,15 @@
+{
+    "name": "ready-check",
+    "authors": [
+        "Khankar#2236",
+        "CRASH1115#2944"
+    ],
+    "title": "MG Living World - Ready Check",
+    "version": "2.0.0",
+    "description": "Allows the GM to prompt their players for a ready check, and for players to respond. Adaptation of 'Ready Set Go! - A Ready Check Module' for Master Geese's Living World Tools.",
+    "main": "src/ready-check.ts",
+    "devDependencies": {
+        "@league-of-foundry-developers/foundry-vtt-types": "^9.255.3",
+        "typescript": "^4.1.3"
+    }
+}
