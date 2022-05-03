@@ -24,12 +24,6 @@
 	  "readme":		"https://github.com/TheMasterGeese/{{name}}/blob/main/README.md",
 	  "changelog":	"https://github.com/TheMasterGeese/{{name}}/blob/main/CHANGELOG.md",
   	"protected": false,
-  	"coreTranslation": false,
-  	"dependencies": [
-		{
-			"name": "discord-integration",
-			"manifest": "https://raw.githubusercontent.com/TheMasterGeese/discord-integration/main/bundle/module.json"
-		}
-	]
+  	"coreTranslation": false
 }
 
