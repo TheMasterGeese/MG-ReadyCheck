@@ -337,7 +337,9 @@ async function processReadyResponse(data: ReadyCheckUserData) {
 				}
 				// Send a message to the GM indicating that all users are ready.
 				message = `@${game.user.name} `.concat(game.i18n.localize("READYCHECK.AllPlayersReady"));
-				Hooks.callAll("sendDiscordMessage", message);
+				if (game.settings.get('mg-ready-check', 'enableDiscordIntegration')) {
+					Hooks.callAll("sendDiscordMessage", message);
+				}
 			}
 		} else {
 			console.error(`The user with the id ${data.userId} was not found.`);
