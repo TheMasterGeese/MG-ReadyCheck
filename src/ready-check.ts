@@ -87,7 +87,7 @@ Hooks.once("init", function () {
 Hooks.once("ready", async function () {
 	gameUsers = game.users.contents;
 	if (game.settings.get('mg-ready-check', 'statusResetOnLoad') && game.user.isGM) {
-		setAllToNotReady();
+		setPlayersToNotReady();
 	}
 	await updatePlayersWindow();
 });
@@ -117,19 +117,27 @@ Hooks.on('renderPlayerList', async function () {
 	await updatePlayersWindow();
 });
 
-Hooks.on('initReadyCheck', async function (message : string = game.i18n.localize("READYCHECK.DialogContentReadyCheck")) {
+/**
+ * Initiate a ready check
+ * 
+ * @param message The prompt to display for the ready check
+ * @param users The users to include in the ready check. Defaults to all Users.
+ */ 
+Hooks.on('initReadyCheck', async function (message : string = game.i18n.localize("READYCHECK.DialogContentReadyCheck"), users? : User[]) {
 	if (game.user.isGM) {
-		await initReadyCheck(message);
+		await initReadyCheck(message, users ?? getUsersWithTokenInScene());
 	} else {
 		ui.notifications.error(game.i18n.localize("READYCHECK.ErrorNotGM"));
 	}
 });
 
 /**
- * Set the status of all users to "Not Ready"
+ * Set the status of certain players to "Not Ready"
+ * 
+ * @param players The players to set status to "Not Ready"
  */
-function setAllToNotReady() {
-	gameUsers.forEach((user : User) =>  {
+function setPlayersToNotReady(players : User[] = gameUsers) {
+	players.forEach((user : User) =>  {
 		user.setFlag('mg-ready-check', 'isReady', false).catch(reason => {
 			console.error(reason)
 		});
@@ -212,12 +220,12 @@ function initReadyCheckDefault() {
  * 
  * @param message The message to display in the ready check dialogue and to forward to Discord
  */
-async function initReadyCheck(message : string = game.i18n.localize("READYCHECK.DialogContentReadyCheck")) {
+async function initReadyCheck(message : string = game.i18n.localize("READYCHECK.DialogContentReadyCheck"), users : User[]) {
 	if (game.settings.get('mg-ready-check', 'pauseOnReadyCheck') && !game.paused) {
 		game.togglePause(true, true);
 	}
 	const data = { action: 'check' };
-	setAllToNotReady();
+	setPlayersToNotReady(users);
 	if (socket) {
 		socket.emit('module.mg-ready-check', data);
 	}
