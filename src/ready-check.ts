@@ -213,7 +213,7 @@ function initReadyCheckDefault() {
  * @param message The message to display in the ready check dialogue and to forward to Discord
  */
 async function initReadyCheck(message : string = game.i18n.localize("READYCHECK.DialogContentReadyCheck")) {
-	if (game.settings.get('mg-ready-check', 'pauseOnReadyCheck')) {
+	if (game.settings.get('mg-ready-check', 'pauseOnReadyCheck') && !game.paused) {
 		game.togglePause(true, true);
 	}
 	const data = { action: 'check' };
@@ -331,13 +331,16 @@ async function processReadyResponse(data: ReadyCheckUserData) {
 			ui.players.render();
 			let message : string;
 			if (allUsersInSceneReady()) {
-				// Pause the game if the setting to do so is enabled.
-				if (game.settings.get('mg-ready-check', 'unpauseOnAllReady')) {
+				// Unpause the game if the setting to do so is enabled.
+				if (game.settings.get('mg-ready-check', 'unpauseOnAllReady') && game.paused) {
 					game.togglePause(false, true);
 				}
 				// Send a message to the GM indicating that all users are ready.
 				message = `@${game.user.name} `.concat(game.i18n.localize("READYCHECK.AllPlayersReady"));
-				if (game.settings.get('mg-ready-check', 'enableDiscordIntegration')) {
+				const usersInScene = getUsersWithTokenInScene();
+				if (game.settings.get('mg-ready-check', 'enableDiscordIntegration')
+					&& usersInScene.find(user => user.id === userToUpdate.id)
+				) {
 					Hooks.callAll("sendDiscordMessage", message);
 				}
 			}
