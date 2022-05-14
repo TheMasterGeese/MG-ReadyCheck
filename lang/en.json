@@ -46,5 +46,9 @@
   "READYCHECK.SettingsPauseOnReadyCheckHint": "When the GM initiates a Ready Check, the game will be automatically paused.",
 
   "READYCHECK.SettingsUnpauseOnAllReadyTitle": "Unpause When All Players Are Ready",
-  "READYCHECK.SettingsUnpauseOnAllReadyHint": "When all players with a token in the current scene have indicated they are \"Ready\", the game will unpause. Has no effect unless \"Pause on Ready Check\" is enabled."
+  "READYCHECK.SettingsUnpauseOnAllReadyHint": "When all players with a token in the current scene have indicated they are \"Ready\", the game will unpause. Has no effect unless \"Pause on Ready Check\" is enabled.",
+
+  "READYCHECK.AllPlayersInitReadyCheckTitle": "All Players Can Initiate Ready Checks",
+  "READYCHECK.AllPlayersInitReadyCheckHint": "All players are able to initiate Ready Checks. (Normally, only the GM can initiate Ready checks.) Note that this option requires the socketlib module to be installed."
+
 }
