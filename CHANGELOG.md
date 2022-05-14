@@ -1,3 +1,8 @@
+# Version 2.1.0
+- initReadyCheck hook now allows a list of users to be passed who will be included in the ready check. If not provided, the check defaults to all users with a token in the current scene.
+- Players without a token in the current scene that change their ready status will no longer trigger the "All Players Are Ready" message in Discord.
+- "All Players Are Ready" message is no longer sent to discord while the discord integration setting is disabled.
+- Removed unnecessary dependency on the Discord integration module (all interfacing is done through event hooks).
 # Version 2.0.0
 - Initial Release of MG Living World overhaul
 - Added setting to configure whether the game pauses when a Ready Check is initiated
