@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/await-thenable */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -127,7 +130,7 @@ Hooks.on('initReadyCheck', async function (message : string = game.i18n.localize
 	if (game.user.isGM) {
 		await initReadyCheck(message, users ?? getUsersWithTokenInScene());
 	} else {
-		ui.notifications.error(game.i18n.localize("READYCHECK.ErrorNotGM"));
+		// ui.notifications.error(game.i18n.localize("READYCHECK.ErrorNotGM"));
 	}
 });
 
