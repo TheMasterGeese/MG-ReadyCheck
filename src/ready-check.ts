@@ -5,9 +5,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-let gameUsers : StoredDocument<User>[] = [];
-
-
 /**
  * Register all settings
  */
@@ -88,22 +85,15 @@ Hooks.once("init", function () {
 
 // Render the status symbols and if the setting is enabled, reset all statuses.
 Hooks.once("ready", async function () {
-	gameUsers = game.users.contents;
-	if (game.settings.get('mg-ready-check', 'statusResetOnLoad') && game.user.isGM) {
+	if (game.settings.get('mg-ready-check', 'statusResetOnLoad') && game.user.role === 4) {
 		setPlayersToNotReady();
 	}
 	await updatePlayersWindow();
-});
-
-
-// Set Up Buttons and Socket Stuff
-Hooks.on('renderChatLog', function () {
-	createButtons();
 	if (socket) {
 		// create the socket handler
-		socket.on('module.mg-ready-check', async (data : ReadyCheckUserData) => {
+		socket.on('module.mg-ready-check', async (data: ReadyCheckUserData) => {
 			if (data.action === 'check') {
-				displayReadyCheckDialog(game.i18n.localize("READYCHECK.DialogContentReadyCheck"));
+				displayReadyCheckDialog(data.dialog ?? game.i18n.localize("READYCHECK.DialogContentReadyCheck"));
 			}
 			else if (data.action === 'update') {
 				await processReadyResponse(data);
@@ -113,6 +103,13 @@ Hooks.on('renderChatLog', function () {
 			}
 		});
 	}
+});
+
+
+// Set Up Buttons and Socket Stuff
+Hooks.on('renderChatLog', function () {
+	createButtons();
+	
 });
 
 // Update the display of the Player UI.
@@ -125,13 +122,9 @@ Hooks.on('renderPlayerList', async function () {
  * 
  * @param message The prompt to display for the ready check
  * @param users The users to include in the ready check. Defaults to all Users.
- */ 
-Hooks.on('initReadyCheck', async function (message : string = game.i18n.localize("READYCHECK.DialogContentReadyCheck"), users? : User[]) {
-	if (game.user.isGM) {
-		await initReadyCheck(message, users ?? getUsersWithTokenInScene());
-	} else {
-		// ui.notifications.error(game.i18n.localize("READYCHECK.ErrorNotGM"));
-	}
+ */
+Hooks.on('initReadyCheck', async function (message: string = game.i18n.localize("READYCHECK.DialogContentReadyCheck"), users?: User[]) {
+	await initReadyCheck(message, users ?? getUsersWithTokenInScene());
 });
 
 /**
@@ -139,8 +132,8 @@ Hooks.on('initReadyCheck', async function (message : string = game.i18n.localize
  * 
  * @param players The players to set status to "Not Ready"
  */
-function setPlayersToNotReady(players : User[] = gameUsers) {
-	players.forEach((user : User) =>  {
+function setPlayersToNotReady(players: User[] = game.users.contents) {
+	players.forEach((user: User) => {
 		user.setFlag('mg-ready-check', 'isReady', false).catch(reason => {
 			console.error(reason)
 		});
@@ -154,8 +147,8 @@ function setPlayersToNotReady(players : User[] = gameUsers) {
  */
 function createButtons() {
 	//set title based on whether the user is player or GM
-	const btnTitle : string = game.user.role === 4 ? game.i18n.localize("READYCHECK.UiGmButton") : game.i18n.localize("READYCHECK.UiChangeButton");
-	
+	const btnTitle: string = game.user.role === 4 ? game.i18n.localize("READYCHECK.UiGmButton") : game.i18n.localize("READYCHECK.UiChangeButton");
+
 	const sidebarBtn = $(`<a class="crash-ready-check-sidebar" title="${btnTitle}"><i class="fas fa-hourglass-half"></i></a>`);
 	const popoutBtn = $(`<a class="crash-ready-check-popout" title="${btnTitle}"><i class="fas fa-hourglass-half"></i></a>`);
 	const sidebarDiv = $("#sidebar").find(".chat-control-icon");
@@ -181,8 +174,8 @@ function createButtons() {
 	 */
 	function readyCheckOnClick(event: JQuery.ClickEvent) {
 		event.preventDefault();
-			if (game.user.role === 4) { displayGmDialog(); }
-			else { displayStatusUpdateDialog(); }
+		if (game.user.role === 4) { displayGmDialog(); }
+		else { displayStatusUpdateDialog(); }
 	}
 }
 
@@ -205,7 +198,7 @@ function displayGmDialog() {
 	};
 	new Dialog({
 		title: game.i18n.localize("READYCHECK.GmDialogTitle"),
-		content: `<p>${game.i18n.localize("READYCHECK.GmDialogContent")}</p>`, 
+		content: `<p>${game.i18n.localize("READYCHECK.GmDialogContent")}</p>`,
 		buttons: buttons,
 		default: "check"
 	}).render(true);
@@ -223,11 +216,11 @@ function initReadyCheckDefault() {
  * 
  * @param message The message to display in the ready check dialogue and to forward to Discord
  */
-async function initReadyCheck(message : string = game.i18n.localize("READYCHECK.DialogContentReadyCheck"), users : User[]) {
+async function initReadyCheck(message: string = game.i18n.localize("READYCHECK.DialogContentReadyCheck"), users: User[]) {
 	if (game.settings.get('mg-ready-check', 'pauseOnReadyCheck') && !game.paused) {
 		game.togglePause(true, true);
 	}
-	const data = { action: 'check' };
+	const data = { action: 'check', dialog: message };
 	setPlayersToNotReady(users);
 	if (socket) {
 		socket.emit('module.mg-ready-check', data);
@@ -237,7 +230,7 @@ async function initReadyCheck(message : string = game.i18n.localize("READYCHECK.
 
 	if (game.settings.get('mg-ready-check', 'enableDiscordIntegration')) {
 		// For every user in the game, if they have a token in the current scene, ping them as part of the ready check message.
-		getUsersWithTokenInScene().forEach((user : User) => {
+		getUsersWithTokenInScene().forEach((user: User) => {
 			message = `@${user.name} ${message}`;
 		});
 
@@ -249,14 +242,14 @@ async function initReadyCheck(message : string = game.i18n.localize("READYCHECK.
  * Gets an array of users that have a token in the current scene.
  * @returns The array of users
  */
-function getUsersWithTokenInScene() : User[] {
-	const usersInScene : User[] = [];
-	gameUsers.forEach((user : User) => {
-		const scene : Scene = game.scenes.active
-		scene.data.tokens.forEach((token : TokenDocument) => {
+function getUsersWithTokenInScene(): User[] {
+	const usersInScene: User[] = [];
+	game.users.contents.forEach((user: User) => {
+		const scene: Scene = game.scenes.active
+		scene.data.tokens.forEach((token: TokenDocument) => {
 			// permissions object that maps user ids to permission enums
 			const tokenPermissions = game.actors.get(token.data.actorId).data.permission;
-			
+
 			// if the user owns this token, then they are in the scene.
 			if (tokenPermissions[user.id] === 3 && !usersInScene.includes(user)) {
 				usersInScene.push(user);
@@ -270,7 +263,7 @@ function getUsersWithTokenInScene() : User[] {
  * Set up the dialogue to update your ready status.
  */
 function displayStatusUpdateDialog() {
-	const data : ReadyCheckUserData = { action: 'update', ready: false, userId: game.userId ?? ""};
+	const data: ReadyCheckUserData = { action: 'update', ready: false, userId: game.userId ?? "" };
 	const buttons = {
 		yes: {
 			icon: "<i class='fas fa-check'></i>",
@@ -299,7 +292,7 @@ function displayStatusUpdateDialog() {
  * @param message The message to display on the dialogue.
  */
 function displayReadyCheckDialog(message: string) {
-	const data: ReadyCheckUserData = { action: 'update', ready: false, userId: game.userId ?? "" };
+	const data: ReadyCheckUserData = { action: 'update', ready: false, userId: game.userId ?? "", dialog: message };
 	const buttons = {
 		yes: {
 			icon: "<i class='fas fa-check'></i>",
@@ -310,7 +303,7 @@ function displayReadyCheckDialog(message: string) {
 
 	new Dialog({
 		title: game.i18n.localize("READYCHECK.DialogTitleReadyCheck"),
-		content: `<p>${message}</p>`,
+		content: `<p>${data.dialog}</p>`,
 		buttons: buttons,
 		default: "yes"
 	}).render(true);
@@ -323,7 +316,7 @@ function displayReadyCheckDialog(message: string) {
 async function updateReadyStatus(data: ReadyCheckUserData) {
 	// If the user is a GM, just update it since the socket go to the sender, and none of the recipients (players)
 	// will have the permissions require to update user flags. If the user is not a GM, emit that socket.
-	if (game.user.isGM) {
+	if (isProxyGM(game.user)) {
 		await processReadyResponse(data);
 	} else if (socket) {
 		socket.emit('module.mg-ready-check', data);
@@ -335,23 +328,32 @@ async function updateReadyStatus(data: ReadyCheckUserData) {
  * @param data 
  */
 async function processReadyResponse(data: ReadyCheckUserData) {
-	if (game.user.isGM) {
-		const userToUpdate = gameUsers.find((user : User) => user.id === data.userId);
+	if (isProxyGM(game.user)) {
+		const userToUpdate = game.users.contents.find((user: User) => user.id === data.userId);
 		if (userToUpdate) {
 			await userToUpdate.setFlag('mg-ready-check', 'isReady', data.ready);
 			ui.players.render();
-			let message : string;
+			let message = "";
 			if (allUsersInSceneReady()) {
 				// Unpause the game if the setting to do so is enabled.
 				if (game.settings.get('mg-ready-check', 'unpauseOnAllReady') && game.paused) {
 					game.togglePause(false, true);
 				}
-				// Send a message to the GM indicating that all users are ready.
-				message = `@${game.user.name} `.concat(game.i18n.localize("READYCHECK.AllPlayersReady"));
+
 				const usersInScene = getUsersWithTokenInScene();
 				if (game.settings.get('mg-ready-check', 'enableDiscordIntegration')
 					&& usersInScene.find(user => user.id === userToUpdate.id)
 				) {
+					// We want to only ping the GMs that have a setting indicating that they should be pinged for this notification.
+					game.users.contents.forEach((user: User) => {
+						const shouldPing = user.getFlag('discord-integration', 'sendGMNotifications') as boolean;
+						if (shouldPing) {
+							message += `@${user.name} `;
+						}
+					});
+					// Send a message to the GM(s) indicating that all users are ready.
+					message += game.i18n.localize("READYCHECK.AllPlayersReady");
+					
 					Hooks.callAll("sendDiscordMessage", message);
 				}
 			}
@@ -365,10 +367,10 @@ async function processReadyResponse(data: ReadyCheckUserData) {
  * Checks if all users in a scene are ready.
  * @returns Returns true if all users are ready, false otherwise.
  */
-function allUsersInSceneReady() : boolean {
+function allUsersInSceneReady(): boolean {
 	let usersReady = true;
 	const sceneUsers = getUsersWithTokenInScene();
-	sceneUsers.forEach((user : User) => {
+	sceneUsers.forEach((user: User) => {
 		if (!user.getFlag('mg-ready-check', 'isReady')) {
 			usersReady = false;
 		}
@@ -385,7 +387,7 @@ function allUsersInSceneReady() : boolean {
 async function displayReadyCheckChatMessage(data: ReadyCheckUserData) {
 	if (game.settings.get("mg-ready-check", "showChatMessagesForChecks")) {
 		// Find the current user
-		const currentUser = gameUsers.find((user : User) => user.data._id === data.userId );
+		const currentUser = game.users.contents.find((user: User) => user.data._id === data.userId);
 		if (currentUser) {
 			const username = currentUser.data.name;
 			const content = `${username} ${game.i18n.localize("READYCHECK.ChatTextCheck")}`;
@@ -403,10 +405,10 @@ async function displayReadyCheckChatMessage(data: ReadyCheckUserData) {
  */
 async function displayStatusUpdateChatMessage(data: ReadyCheckUserData) {
 	if (game.settings.get("mg-ready-check", "showChatMessagesForUserUpdates")) {
-		const currentUser = gameUsers.find((user : User) => user.id === data.userId);
+		const currentUser = game.users.contents.find((user: User) => user.id === data.userId);
 		if (currentUser) {
 			const username = currentUser.data.name;
-			const status = data.ready ? game.i18n.localize("READYCHECK.StatusReady"): game.i18n.localize("READYCHECK.StatusNotReady");
+			const status = data.ready ? game.i18n.localize("READYCHECK.StatusReady") : game.i18n.localize("READYCHECK.StatusNotReady");
 			const content = `${username} ${game.i18n.localize("READYCHECK.ChatTextUserUpdate")} ${status}`;
 			await ChatMessage.create({ speaker: { alias: "Ready Set Go!" }, content: content });
 		} else {
@@ -432,18 +434,19 @@ async function playReadyCheckAlert() {
  * Updates the ui of each player's ready status.
  */
 async function updatePlayersWindow() {
+	const gameUsers = game.users.contents
 	for (let i = 0; i < gameUsers.length; i++) {
 		// Is the user ready
 		const ready = await gameUsers[i].getFlag('mg-ready-check', 'isReady');
 		// the Id of the current user
-		const userId : string = gameUsers[i].data._id;
+		const userId: string = gameUsers[i].data._id;
 
 		// get the ready/not ready indicator
 		const indicator = $("#players").find(`[data-user-id=${userId}] .crash-ready-indicator`);
 		const indicatorExists = indicator.length > 0;
-		
-		let title : string
-		let classToAdd, classToRemove, iconClassToAdd, iconClassToRemove ;
+
+		let title: string
+		let classToAdd, classToRemove, iconClassToAdd, iconClassToRemove;
 
 		if (ready) {
 			title = game.i18n.localize("READYCHECK.PlayerReady");
@@ -471,11 +474,16 @@ async function updatePlayersWindow() {
 	}
 }
 
+function isProxyGM(user: User): boolean {
+	const proxyGMId = game.settings.get("mg-living-world-core", "GMProxy");
+	return user.id === proxyGMId;
+}
 /**
  * data passed to button listener functions
  */
 class ReadyCheckUserData {
 	action = "";
 	ready = false;
-	userId  = "";
+	userId = "";
+	dialog? = "";
 }
