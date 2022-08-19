@@ -71,8 +71,8 @@ See [CHANGELOG](CHANGELOG.md)
 See [CONTRIBUTING](CONTRIBUTING.md)
 
 ## License
-- This work is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/legalcode).
-- This work is licensed under the [Foundry Virtual Tabletop EULA - Limited License Agreement for Module Development](https://foundryvtt.com/article/license/).
+- The original work done by crash1115 is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/legalcode).
+- This work is licensed under the [Foundry Virtual Tabletop EULA - Limited License Agreement for Module Development](https://foundryvtt.com/article/license/) and [MIT License](LICENSE).
 
 ## Contact
 Contact MasterGeese via Discord (Khankar#2236) or email (themastergeese@gmail.com).
