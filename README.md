@@ -6,7 +6,7 @@ This mod is based off the ["Ready Check Go!" mod by crash1115](https://github.co
 
 [![Image from Gyazo](https://i.gyazo.com/daca34d0b06c3de5371f487a27b4f6aa.jpg)](https://gyazo.com/daca34d0b06c3de5371f487a27b4f6aa)
 
-# Instructions
+# Instructions t
 
 ## Starting a Ready Check (GM Only)
 To initiate a ready check, you must be logged in as a user with GM permissions. Click on the hourglass button above the chat input, then select "Start A Ready Check". This will reset all player statuses to "Not Ready" and put a dialog on each user's screen asking them if they're ready.
