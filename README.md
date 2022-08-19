@@ -1,4 +1,14 @@
-![GitHub All Releases](https://img.shields.io/github/downloads/TheMasterGeese/MG-ReadyCheck/total) ![GitHub Releases](https://img.shields.io/github/downloads/TheMasterGeese/MG-ReadyCheck/latest/total) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/TheMasterGeese/MG-ReadyCheck?label=latest%20version)
+[version-shield]: https://img.shields.io/github/v/release/TheMasterGeese/mg-ready-check
+[version-url]: https://github.com/TheMasterGeese/mg-ready-check/releases/latest
+[forks-shield]: https://img.shields.io/github/forks/TheMasterGeese/mg-ready-check
+[forks-url]: https://github.com/TheMasterGeese/mg-ready-check/network/members
+[stars-shield]: https://img.shields.io/github/stars/TheMasterGeese/mg-ready-check
+[stars-url]: https://github.com/TheMasterGeese/mg-ready-check/stargazers
+[issues-shield]: https://img.shields.io/github/issues/TheMasterGeese/mg-ready-check
+[issues-url]: https://github.com/TheMasterGeese/mg-ready-check/issues
+[license-shield]: https://img.shields.io/github/license/TheMasterGeese/mg-ready-check
+[license-url]: https://github.com/TheMasterGeese/mg-ready-check/blob/master/LICENSE.md
+[last-updated-shield]: https://img.shields.io/github/last-commit/TheMasterGeese/mg-ready-check
 
 MG Living World - Ready Check is a system agnostic module for Foundry VTT designed to help GM's and players communicate when they're ready to play. The mod is intended to act as a dependency for other MG Living World mods, but can be enabled on its own as well. GM's are given the option to initiate ready checks, and both GM's and players can indicate that they're ready (or not) at any time.
 
