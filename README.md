@@ -10,13 +10,34 @@
 [license-url]: https://github.com/TheMasterGeese/mg-ready-check/blob/master/LICENSE.md
 [last-updated-shield]: https://img.shields.io/github/last-commit/TheMasterGeese/mg-ready-check
 
+# MG Living World - Ready Check
+
 MG Living World - Ready Check is a system agnostic module for Foundry VTT designed to help GM's and players communicate when they're ready to play. The mod is intended to act as a dependency for other MG Living World mods, but can be enabled on its own as well. GM's are given the option to initiate ready checks, and both GM's and players can indicate that they're ready (or not) at any time.
 
 This mod is based off the ["Ready Check Go!" mod by crash1115](https://github.com/crash1115/ready-check), special thanks to their work on this module.
 
 [![Image from Gyazo](https://i.gyazo.com/daca34d0b06c3de5371f487a27b4f6aa.jpg)](https://gyazo.com/daca34d0b06c3de5371f487a27b4f6aa)
 
-# Instructions
+[![Version][version-shield]][version-url]
+![Last Updated][last-updated-shield]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+
+### Table of Contents
+
+- [Starting a Ready Check](#Starting-a-Ready-Check)
+- [Responding to a Ready Check](#Responding-to-a-Ready-Check)
+- [Updating Your Ready Status](#Updating-Your-Ready-Status)
+- [Compatibility](#Compatibility)
+- [Changelog](#Changelog)
+- [Contributing](#Contributing)
+- [Contact](#Contact)
+- [License](#License)
+
+
+## How to Use
 
 ## Starting a Ready Check (GM Only)
 To initiate a ready check, you must be logged in as a user with GM permissions. Click on the hourglass button above the chat input, then select "Start A Ready Check". This will reset all player statuses to "Not Ready" and put a dialog on each user's screen asking them if they're ready.
@@ -25,7 +46,7 @@ Video (GM View): https://i.gyazo.com/5b98ca43945d9796833a8912a95a6945.mp4
 
 You can use the Ready Check when you first start up the game, right before combat starts, or when you're taking a quick break so you can see when everyone is back and ready to play!
 
-Also exposes a hook to trigger a ready check with a custom message (TODO: only trigger ready check for certain players as well). These hooks are also used within other MG Living World mods, used to control the flow of combat and keep players from missing important notifications.
+Also exposes a hook to trigger a ready check with a custom message, or to only include a specific subset of users. These hooks are also used within other MG Living World mods, used to control the flow of combat and keep players from missing important notifications.
 
 ## Responding to a Ready Check (GM and Players)
 When a ready check is initiated, a dialog will display on each user's screen. To let everyone know you're ready, just click the "Ready" button at the bottom of the window. When you do so, a green check mark will appear next to your name in the players window.
@@ -43,17 +64,14 @@ You can use this toggle to help your group see when you have to step away to tak
 - Should be compatible with all systems.
 - Might have display issues with other modules that modify the players UI or the area around the chat interface.
 
-# Installation
-## Using The Manifest URL
-1. Open up Foundry
-2. Navigate to the Add-On Modules tab
-3. Click Install Module
-4. Paste the following URL into the Manifest URL text field: https://raw.githubusercontent.com/crash1115/ready-check/main/module.json
-5. Click Install
+## Changelog
+See [CHANGELOG](CHANGELOG.md)
 
-# Got Questions?
+## Contributing
+See [CONTRIBUTING](CONTRIBUTING.md)
+
+## License
+Distributed under the MIT License. See [LICENSE](LICENSE.md) for more information.
+
+## Contact
 Contact MasterGeese via Discord (Khankar#2236) or email (themastergeese@gmail.com).
-
-# License
-- This work is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/legalcode).
-- This work is licensed under the [Foundry Virtual Tabletop EULA - Limited License Agreement for Module Development](https://foundryvtt.com/article/license/).
