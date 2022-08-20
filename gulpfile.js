@@ -21,7 +21,7 @@ const DIST = 'dist/';
 const BUNDLE = 'bundle/';
 const SOURCE = 'src/';
 const LANG = 'lang/';
-const TEMPLATES = 'templates/';
+const TEMPLATES = 'handlebars/';
 const CSS = 'css/';
 const SOUNDS = 'sounds/';
 const DATA = "Data/";
@@ -271,6 +271,7 @@ function dev() {
 	);
 }
 exports.dev = dev();
+
 /**
  * Sets up a file watch on the project to detect any file changes and automatically rebuild those components, and then copy them to the Development Environment.
  */
