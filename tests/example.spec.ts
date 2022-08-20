@@ -1,5 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
-import { TestEnvironment } from "./TestEnvironmentSample"
+import { TestEnvironment } from "./TestEnvironment"
 
 // UIDs and other variables common throughout all tests.
 /**

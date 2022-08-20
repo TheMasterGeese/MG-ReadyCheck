@@ -5,7 +5,7 @@
         "CRASH1115#2944"
     ],
     "title": "MG Living World - Ready Check",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "description": "Allows the GM to prompt their players for a ready check, and for players to respond. Adaptation of 'Ready Set Go! - A Ready Check Module' for Master Geese's Living World Tools.",
     "main": "src/ready-check.ts",
     "devDependencies": {

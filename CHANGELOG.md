@@ -1,4 +1,10 @@
 # MG Living World - Ready Check
+## Version 2.2.0
+- Added development environment features from MasterGeeseLivingWorldTools, including eslint, gulpfile, docker-compose file, playwright test config, CONTRIBUTING document, and more.
+- Refactored the buttons in the Sidebar and Popout, as well as the ready indicator to be constructed using Handlebars.
+- Updated README with shield markers.
+- Compatible version should now be "9" instead of "0.9".
+- Ready checks are now executed by the GM designated as "Proxy GM" in mg-living-world-core, dependency for this module has been added as a result.
 ## Version 2.1.0
 - initReadyCheck hook now allows a list of users to be passed who will be included in the ready check. If not provided, the check defaults to all users with a token in the current scene.
 - Players without a token in the current scene that change their ready status will no longer trigger the "All Players Are Ready" message in Discord.

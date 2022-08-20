@@ -24,6 +24,12 @@
 	  "readme":		"https://github.com/TheMasterGeese/{{name}}/blob/main/README.md",
 	  "changelog":	"https://github.com/TheMasterGeese/{{name}}/blob/main/CHANGELOG.md",
   	"protected": false,
-  	"coreTranslation": false
+  	"coreTranslation": false,
+	  "dependencies": [
+		{
+			"name": "mg-living-world-core",
+			"type": "module"
+		}
+	]
 }
 

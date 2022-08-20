@@ -89,7 +89,7 @@ Hooks.once("init", function () {
 // Render the status symbols and if the setting is enabled, reset all statuses.
 Hooks.once("ready", async function () {
 
-	loadTemplates([
+	await loadTemplates([
 		popoutBtnFile,
 		sidebarBtnFile,
 		readyIndicatorFile
@@ -117,8 +117,8 @@ Hooks.once("ready", async function () {
 
 
 // Set Up Buttons and Socket Stuff
-Hooks.on('renderChatLog', function () {
-	createButtons();
+Hooks.on('renderChatLog', async function () {
+	await createButtons();
 
 });
 
