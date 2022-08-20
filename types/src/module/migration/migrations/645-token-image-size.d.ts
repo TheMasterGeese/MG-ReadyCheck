@@ -1,0 +1,22 @@
+import { ActorPF2e } from "@actor";
+import { ActorSourcePF2e } from "@actor/data";
+import { MigrationBase } from "../base";
+/** Restore saved token images and sizes from old versions of the respective rule elements */
+export declare class Migration645TokenImageSize extends MigrationBase {
+    static override: any;
+    version: number;
+    imageOverrides: Map<string, VideoPath>;
+    sizeOverrides: Map<string, {
+        height: number;
+        width: number;
+    }>;
+    isTokenImageFlag(flag: unknown): flag is VideoPath;
+    isTokenSizeFlag(flag: unknown): flag is {
+        height: number;
+        width: number;
+    };
+    override: any;
+    updateActor(actorSource: ActorSourcePF2e): Promise<void>;
+    override: any;
+    updateToken(tokenSource: foundry.data.TokenSource, actor: Readonly<ActorPF2e | null>): Promise<void>;
+}
