@@ -1,4 +1,6 @@
 # MG Living World - Ready Check
+## Version 2.2.1
+- Hotfix to add the link to mg-living-world-core to module.json
 ## Version 2.2.0
 - Added development environment features from MasterGeeseLivingWorldTools, including eslint, gulpfile, docker-compose file, playwright test config, CONTRIBUTING document, and more.
 - Refactored the buttons in the Sidebar and Popout, as well as the ready indicator to be constructed using Handlebars.
