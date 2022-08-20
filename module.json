@@ -28,7 +28,8 @@
 	  "dependencies": [
 		{
 			"name": "mg-living-world-core",
-			"type": "module"
+			"type": "module",
+			"manifest": "https://raw.githubusercontent.com/TheMasterGeese/mg-living-world-core/main/bundle/module.json"
 		}
 	]
 }

@@ -2,7 +2,7 @@
 	"name": "mg-ready-check",
 	"title": "MG Living World - Ready Check",
 	"description": "Allows the GM to prompt their players for a ready check, and for players to respond. Adaptation of 'Ready Set Go! - A Ready Check Module' for Master Geese's Living World Tools.",
-	"version": "2.2.0",
+	"version": "2.2.1",
 	"authors": [
     	"Khankar#2236",
     	"CRASH1115#2944"
@@ -28,7 +28,8 @@
 	  "dependencies": [
 		{
 			"name": "mg-living-world-core",
-			"type": "module"
+			"type": "module",
+			"manifest": "https://raw.githubusercontent.com/TheMasterGeese/mg-living-world-core/main/bundle/module.json"
 		}
 	]
 }
