@@ -7,8 +7,8 @@
     	"Khankar#2236",
     	"CRASH1115#2944"
   	],
-	"minimumCoreVersion": "0.9.0",
-	"compatibleCoreVersion": "0.9.0",
+	"minimumCoreVersion": "9",
+	"compatibleCoreVersion": "9",
 	"esmodules": "{{sources}}",
 	"styles": "{{css}}",
 	"languages": [
@@ -24,6 +24,12 @@
 	  "readme":		"https://github.com/TheMasterGeese/{{name}}/blob/main/README.md",
 	  "changelog":	"https://github.com/TheMasterGeese/{{name}}/blob/main/CHANGELOG.md",
   	"protected": false,
-  	"coreTranslation": false
+  	"coreTranslation": false,
+	  "dependencies": [
+		{
+			"name": "mg-living-world-core",
+			"type": "module"
+		}
+	]
 }
 

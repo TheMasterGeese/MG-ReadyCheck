@@ -2,13 +2,13 @@
 	"name": "mg-ready-check",
 	"title": "MG Living World - Ready Check",
 	"description": "Allows the GM to prompt their players for a ready check, and for players to respond. Adaptation of 'Ready Set Go! - A Ready Check Module' for Master Geese's Living World Tools.",
-	"version": "2.1.0",
+	"version": "2.2.0",
 	"authors": [
     	"Khankar#2236",
     	"CRASH1115#2944"
   	],
-	"minimumCoreVersion": "0.9.0",
-	"compatibleCoreVersion": "0.9.0",
+	"minimumCoreVersion": "9",
+	"compatibleCoreVersion": "9",
 	"esmodules": ["src/ready-check.js"],
 	"styles": ["css/ready-check.css"],
 	"languages": [
@@ -24,6 +24,12 @@
 	  "readme":		"https://github.com/TheMasterGeese/mg-ready-check/blob/main/README.md",
 	  "changelog":	"https://github.com/TheMasterGeese/mg-ready-check/blob/main/CHANGELOG.md",
   	"protected": false,
-  	"coreTranslation": false
+  	"coreTranslation": false,
+	  "dependencies": [
+		{
+			"name": "mg-living-world-core",
+			"type": "module"
+		}
+	]
 }
 
