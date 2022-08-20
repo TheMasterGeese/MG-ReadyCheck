@@ -5,6 +5,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
+const popoutBtnFile = 'modules/mg-ready-check/handlebars/popoutBtn.hbs';
+const sidebarBtnFile = 'modules/mg-ready-check/handlebars/sidebarBtn.hbs';
+const readyIndicatorFile = 'modules/mg-ready-check/handlebars/readyIndicator.hbs';
 /**
  * Register all settings
  */
@@ -85,6 +88,13 @@ Hooks.once("init", function () {
 
 // Render the status symbols and if the setting is enabled, reset all statuses.
 Hooks.once("ready", async function () {
+
+	loadTemplates([
+		popoutBtnFile,
+		sidebarBtnFile,
+		readyIndicatorFile
+	])
+
 	if (game.settings.get('mg-ready-check', 'statusResetOnLoad') && game.user.role === 4) {
 		setPlayersToNotReady();
 	}
@@ -109,7 +119,7 @@ Hooks.once("ready", async function () {
 // Set Up Buttons and Socket Stuff
 Hooks.on('renderChatLog', function () {
 	createButtons();
-	
+
 });
 
 // Update the display of the Player UI.
@@ -140,17 +150,20 @@ function setPlayersToNotReady(players: User[] = game.users.contents) {
 	});
 }
 
-
-
 /**
  * Create the ready check buttons
  */
-function createButtons() {
+async function createButtons() {
 	//set title based on whether the user is player or GM
 	const btnTitle: string = game.user.role === 4 ? game.i18n.localize("READYCHECK.UiGmButton") : game.i18n.localize("READYCHECK.UiChangeButton");
 
-	const sidebarBtn = $(`<a class="crash-ready-check-sidebar" title="${btnTitle}"><i class="fas fa-hourglass-half"></i></a>`);
-	const popoutBtn = $(`<a class="crash-ready-check-popout" title="${btnTitle}"><i class="fas fa-hourglass-half"></i></a>`);
+	const sidebarBtn = $(await renderTemplate(sidebarBtnFile, {
+		btnTitle: btnTitle
+	}));
+
+	const popoutBtn = $(await renderTemplate(popoutBtnFile, {
+		btnTitle: btnTitle
+	}));
 	const sidebarDiv = $("#sidebar").find(".chat-control-icon");
 	const popoutDiv = $("#chat-popout").find(".chat-control-icon");
 	const btnAlreadyInSidebar = $("#sidebar").find(".crash-ready-check-sidebar").length > 0;
@@ -353,7 +366,7 @@ async function processReadyResponse(data: ReadyCheckUserData) {
 					});
 					// Send a message to the GM(s) indicating that all users are ready.
 					message += game.i18n.localize("READYCHECK.AllPlayersReady");
-					
+
 					Hooks.callAll("sendDiscordMessage", message);
 				}
 			}
@@ -469,7 +482,13 @@ async function updatePlayersWindow() {
 			$(indicator).addClass(iconClassToAdd);
 		} else {
 			// Create a new indicator
-			$("#players").find("[data-user-id=" + userId + "]").append(`<i class="fas ${iconClassToAdd} crash-ready-indicator ${classToAdd}" title="${title}"></i>`);
+			$("#players").find("[data-user-id=" + userId + "]").append(
+				await renderTemplate(readyIndicatorFile, {
+					iconClassToAdd: iconClassToAdd,
+					classToAdd: classToAdd,
+					title: title
+				})
+			);
 		}
 	}
 }
@@ -485,5 +504,5 @@ class ReadyCheckUserData {
 	action = "";
 	ready = false;
 	userId = "";
-	dialog? = "";
+	dialog?= "";
 }
